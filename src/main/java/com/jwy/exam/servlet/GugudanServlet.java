@@ -1,6 +1,7 @@
 package com.jwy.exam.servlet;
 
 import com.jwy.exam.Rq;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,11 +17,10 @@ public class GugudanServlet extends HttpServlet {
 
     int dan = rq.getIntParam("dan", 0);
     int limit = rq.getIntParam("limit", 0);
-    rq.appendBody("<h1>%d단</h1>".formatted(dan));
+    req.setAttribute("dan", dan);
+    req.setAttribute("limit", limit);
 
-    for(int i=1; i <= limit; i++){
-      rq.appendBody("<div>%d * %d  = %d</div>".formatted(dan, i, dan*i));
-    }
-
+    RequestDispatcher requestDispatcher = req.getRequestDispatcher("/gugudan2.jsp");
+    requestDispatcher.forward(req,resp);
   }
 }
