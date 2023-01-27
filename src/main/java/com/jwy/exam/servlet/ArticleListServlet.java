@@ -31,11 +31,39 @@ public class ArticleListServlet extends HttpServlet {
     }
     try{
       con = DriverManager.getConnection(url, id, pw);
-      SecSql sql = new SecSql();
-      sql.append("SELECT * FROM article");
+      SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt FROM article");
+      Map<String,Object> article_cnt = DBUtil.selectRow(con,sql);
+      int page;
+      // 만약 page 파라미터 값이 올바르지 않다면 1로 설정
+      try{
+        page = Integer.parseInt(req.getParameter("page"));
+      }catch(Exception e){
+        page = 1;
+      }
+      // 한 페이지 당 보여주는 게시글 수
+      int onePage_lst_cnt = 30;
+      // 총 게시글 개수
+      int total_lst_cnt = (int) article_cnt.get("cnt");
+      // 총 페이징 개수
+      int total_page_cnt = (total_lst_cnt % onePage_lst_cnt == 0) ? total_lst_cnt / onePage_lst_cnt :((total_lst_cnt / onePage_lst_cnt) +1 );
+      // 페이징 시작 게시글
+      int startList = (page-1)*onePage_lst_cnt +1 ;
+      // 페이징 마지막 게시글
+      int EndList = page * onePage_lst_cnt;
+      // 출력 값 확인
+      System.out.println(startList+" / "+EndList);
+
+      //1~5, 6~10, 11~15
+      int pageStartNum = (page / 5 != 0) ? (page/5):((page/5)+1);
+      int pageLastNum = pageStartNum+4;
+      System.out.println("pageStartNum : "+pageStartNum+" / pageLastNum : "+pageLastNum);
+      sql = SecSql.from("SELECT * FROM article");
+      sql.append("ORDER BY id DESC");
+      sql.append("LIMIT ?, ?", startList, onePage_lst_cnt);
 
       List<Map<String, Object>> articleRows =  DBUtil.selectRows(con,sql);
-
+      req.setAttribute("pageStartNum", pageStartNum);
+      req.setAttribute("pageLastNum", pageLastNum);
       req.setAttribute("articleRows", articleRows);
 
       req.getRequestDispatcher("/article/list.jsp").forward(req,resp);

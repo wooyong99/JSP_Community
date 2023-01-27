@@ -18,7 +18,9 @@ public class DBUtil {
 
     return rows.get(0);
   }
-
+  // Exception은 Error보다 비교적 경미한 오류이며, try-catch문을 이용해 프로그램의 비정상적인 종료를 막을 수 있다.
+  // Checked Exception은 컴파일 전 예측이 가능하므로, 예외처리에 대한 강제성이 있다.
+  // 반면에, Unchecked Exception은 강제성이 없다.
   public static List<Map<String, Object>> selectRows(Connection dbConn, SecSql sql) throws SQLErrorException {
     List<Map<String, Object>> rows = new ArrayList<>();
 
