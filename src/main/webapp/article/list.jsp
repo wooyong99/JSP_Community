@@ -17,7 +17,7 @@
     <h1>게시물 리스트</h1>
     <ul>
     <% for(Map<String,Object> articleRow : articleRows) {%>
-          <li><div><a href="#"><%=articleRow.get("id")%>, <%=articleRow.get("regDate")%>, <%=articleRow.get("updateDate")%>, <%=articleRow.get("title")%>, <%=articleRow.get("body")%></a></div></li>
+          <li><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("id")%>, <%=articleRow.get("regDate")%>, <%=articleRow.get("updateDate")%>, <%=articleRow.get("title")%>, <%=articleRow.get("body")%></a></li>
     <% } %>
     </ul>
 </body>
