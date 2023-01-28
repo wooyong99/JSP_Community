@@ -51,7 +51,7 @@
         <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("id")%></a></td>
         <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("regDate")%></a></td>
         <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></td></td>
-        <td><a href="#">삭제하기</a></td>
+        <td><a href="doDelete?id=<%=articleRow.get("id")%>">삭제하기</a></td>
       </tr>
       <% } %>
       </tbody>

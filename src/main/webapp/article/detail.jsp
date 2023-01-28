@@ -38,7 +38,7 @@
       <td><%= articleRow.get("title")%></td>
       <td><%= articleRow.get("body")%></td>
       <td>
-        <a href="#">삭제하기</a>
+        <a href="doDelete?id=<%=articleRow.get("id")%>">삭제하기</a>
       </td>
     </tr>
   </table>
