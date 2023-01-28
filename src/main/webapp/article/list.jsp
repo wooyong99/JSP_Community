@@ -3,8 +3,9 @@
 
 <%
   List<Map<String,Object>> articleRows = (List<Map<String,Object>>) request.getAttribute("articleRows");
-  int startNum = (int) request.getAttribute("pageStartNum");
-  int LastNum = (int) request.getAttribute("pageLastNum");
+  int pageStartNum = (int) request.getAttribute("pageStartNum");
+  int pageLastNum = (int) request.getAttribute("pageLastNum");
+  int totalPagingCnt = (int) request.getAttribute("totalPagingCnt");
 %>
 <!doctype html>
 <html lang="ko">
@@ -36,13 +37,18 @@
     <% } %>
     </ul>
     <ul class="page">
-      <li> 이전 </li>
+      <% if(pageStartNum > 1 ){ %>
+      <li><a href="list?page=<%=pageStartNum-5%>"> 이전 </a></li>
+      <% }%>
       <%
-      for(int i = startNum; i <= LastNum; i++) {
+      for(int i = pageStartNum; i <= pageLastNum; i++) {
+        if(i <= totalPagingCnt){
       %>
       <li><a href="list?page=<%=i%>"><%=i%></a></li>
+      <% } } %>
+      <% if(pageStartNum +5 < totalPagingCnt) { %>
+      <li><a href="list?page=<%=pageStartNum+5%>"> 다음 </a></li>
       <% } %>
-      <li> 다음 </li>
     </ul>
 </body>
 </html>

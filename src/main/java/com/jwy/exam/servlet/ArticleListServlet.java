@@ -41,27 +41,24 @@ public class ArticleListServlet extends HttpServlet {
         page = 1;
       }
       // 한 페이지 당 보여주는 게시글 수
-      int onePage_lst_cnt = 30;
+      int onePageArticleCnt = 30;
       // 총 게시글 개수
-      int total_lst_cnt = (int) article_cnt.get("cnt");
+      int totalArticleCnt = (int) article_cnt.get("cnt");
       // 총 페이징 개수
-      int total_page_cnt = (total_lst_cnt % onePage_lst_cnt == 0) ? total_lst_cnt / onePage_lst_cnt :((total_lst_cnt / onePage_lst_cnt) +1 );
+      int totalPagingCnt = totalArticleCnt / onePageArticleCnt;
       // 페이징 시작 게시글
-      int startList = (page-1)*onePage_lst_cnt +1 ;
-      // 페이징 마지막 게시글
-      int EndList = page * onePage_lst_cnt;
-      // 출력 값 확인
-      System.out.println(startList+" / "+EndList);
+      int startList = (page-1)*onePageArticleCnt ;
 
       //1~5, 6~10, 11~15
-      int pageStartNum = (page / 5 != 0) ? (page/5):((page/5)+1);
+      int pageStartNum = (page % 5 != 0) ? ((page/5) * 5) +1 : page / 5 ;
       int pageLastNum = pageStartNum+4;
-      System.out.println("pageStartNum : "+pageStartNum+" / pageLastNum : "+pageLastNum);
+      System.out.println(totalPagingCnt);
       sql = SecSql.from("SELECT * FROM article");
       sql.append("ORDER BY id DESC");
-      sql.append("LIMIT ?, ?", startList, onePage_lst_cnt);
+      sql.append("LIMIT ?, ?", startList, onePageArticleCnt);
 
       List<Map<String, Object>> articleRows =  DBUtil.selectRows(con,sql);
+      req.setAttribute("totalPagingCnt", totalPagingCnt);
       req.setAttribute("pageStartNum", pageStartNum);
       req.setAttribute("pageLastNum", pageLastNum);
       req.setAttribute("articleRows", articleRows);
