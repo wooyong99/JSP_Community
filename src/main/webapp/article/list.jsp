@@ -31,11 +31,31 @@
 </head>
 <body>
     <h1>게시물 리스트</h1>
-    <ul class="list">
-    <% for(Map<String,Object> articleRow : articleRows) {%>
-          <li><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("id")%>, <%=articleRow.get("regDate")%>, <%=articleRow.get("updateDate")%>, <%=articleRow.get("title")%>, <%=articleRow.get("body")%></a></li>
-    <% } %>
-    </ul>
+    <table border="1" style="text-align:center;">
+      <colgroup>
+        <col width="100">
+        <col width="200">
+        <col width="100">
+      </colgroup>
+      <thead>
+        <tr>
+          <td>번호</td>
+          <td>생성날짜</td>
+          <td>제목</td>
+          <td>비고</td>
+        </tr>
+      </thead>
+      <tbody>
+      <% for(Map<String,Object> articleRow : articleRows) {%>
+      <tr>
+        <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("id")%></a></td>
+        <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("regDate")%></a></td>
+        <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></td></td>
+        <td><a href="#">삭제하기</a></td>
+      </tr>
+      <% } %>
+      </tbody>
+    </table>
     <ul class="page">
       <% if(pageStartNum > 1 ){ %>
       <li><a href="list?page=<%=pageStartNum-5%>"> 이전 </a></li>

@@ -45,7 +45,7 @@ public class ArticleListServlet extends HttpServlet {
       // 총 게시글 개수
       int totalArticleCnt = (int) article_cnt.get("cnt");
       // 총 페이징 개수
-      int totalPagingCnt = totalArticleCnt / onePageArticleCnt;
+      int totalPagingCnt = (int) Math.ceil((double)totalArticleCnt / onePageArticleCnt);
       // 페이징 시작 게시글
       int startList = (page-1)*onePageArticleCnt ;
 
