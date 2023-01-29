@@ -27,10 +27,19 @@
     }
     .page>li{
       margin:0 10px;
+     }
+     table > tbody > tr > td.articleTitle{
+      display:block;
+      width:200px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+     }
   </style>
 </head>
 <body>
     <h1>게시물 리스트</h1>
+    <button onclick="window.location.href='write'">게시물 작성</button>
     <table border="1" style="text-align:center;">
       <colgroup>
         <col width="100">
@@ -50,7 +59,7 @@
       <tr>
         <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("id")%></a></td>
         <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("regDate")%></a></td>
-        <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></td></td>
+        <td class="articleTitle"><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></td></td>
         <td><a href="doDelete?id=<%=articleRow.get("id")%>">삭제하기</a></td>
       </tr>
       <% } %>
