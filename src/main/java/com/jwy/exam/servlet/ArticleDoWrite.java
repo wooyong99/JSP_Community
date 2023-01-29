@@ -1,5 +1,6 @@
 package com.jwy.exam.servlet;
 
+import com.jwy.exam.Rq;
 import com.jwy.exam.util.DBUtil;
 import com.jwy.exam.util.SecSql;
 import jakarta.servlet.ServletException;
@@ -27,6 +28,7 @@ public class ArticleDoWrite extends HttpServlet {
     resp.setCharacterEncoding("UTF-8");
     resp.setContentType("text/html; charset-utf-8");
 
+    Rq rq = new Rq(req,resp);
     Connection con = null;
     String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
     String id = "jwy";
@@ -40,23 +42,33 @@ public class ArticleDoWrite extends HttpServlet {
       return;
     }
     try{
-      String title = req.getParameter("title");
-      String body = req.getParameter("body");
+      String title = rq.getParam("title","");
+      String body = rq.getParam("body","");
+      if(title.equals("") && body.equals("")){
+        rq.appendBody(String.format("<script> alert('제목/내용을 입력해주세요.'); location.replace('write'); </script>"));
+        return;
+      }else if(title.equals("")){
+        rq.appendBody(String.format("<script> alert('제목을 입력해주세요.'); location.replace('write'); </script>"));
+        return;
+      }else if(body.equals("")){
+        rq.appendBody(String.format("<script> alert('내용을 입력해주세요.'); location.replace('write'); </script>"));
+        return;
+      }
       con = DriverManager.getConnection(url, id, pw);
+
       SecSql sql = SecSql.from("INSERT INTO article SET");
       sql.append("regDate = NOW(), ");
       sql.append("updateDate = NOW(), ");
       sql.append("title = ? ,", title);
       sql.append("body = ? ", body);
 
-      DBUtil.insert(con, sql);
+      int id_param = DBUtil.insert(con, sql);
 
       sql = SecSql.from("SELECT id FROM article");
       sql.append("ORDER BY id DESC");
       sql.append("LIMIT 1");
 
-      int articleId= DBUtil.selectRowIntValue(con ,sql);
-      resp.getWriter().append("<script> alert('"+articleId+"번 게시글이 등록되었습니다.'); location.replace('detail?id="+articleId+"'); </script>");
+      rq.appendBody(String.format("<script> alert('%d번 게시글이 등록되었습니다.'); location.replace('detail?id=%d'); </script>", id_param,id_param));
     }catch(SQLException e){
       e.printStackTrace();
     }finally {

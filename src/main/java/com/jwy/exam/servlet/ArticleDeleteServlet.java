@@ -1,5 +1,6 @@
 package com.jwy.exam.servlet;
 
+import com.jwy.exam.Rq;
 import com.jwy.exam.util.DBUtil;
 import com.jwy.exam.util.SecSql;
 import jakarta.servlet.ServletException;
@@ -21,11 +22,16 @@ public class ArticleDeleteServlet extends HttpServlet {
     req.setCharacterEncoding("UTF-8");
     resp.setCharacterEncoding("UTF-8");
     resp.setContentType("text/html; charset-utf-8");
+
+    Rq rq = new Rq(req, resp);
+
     Connection con = null;
+
     String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
     String id = "jwy";
     String pw = "1234";
-    int id_param = Integer.parseInt(req.getParameter("id"));
+    int id_param = rq.getIntParam("id",0);
+
     try{
       Class.forName("com.mysql.jdbc.Driver");
     }catch(ClassNotFoundException e){
@@ -38,9 +44,12 @@ public class ArticleDeleteServlet extends HttpServlet {
       SecSql sql = SecSql.from("DELETE FROM article");
       sql.append("WHERE id = ?", id_param);
 
-      DBUtil.delete(con,sql);
-
-      resp.getWriter().append("<script> alert('"+id_param+"번 게시글이 삭제되었습니다.'); location.replace('list'); </script>");
+      int deleteRow = DBUtil.delete(con,sql);
+      if (deleteRow == 0) {
+        rq.appendBody("<script> alert('존재하지 않는 게시글입니다.'); location.replace('list'); </script>");
+      }else{
+        rq.appendBody(String.format("<script> alert('%d번 게시글이 삭제되었습니다.'); location.replace('list'); </script>", id_param));
+      }
     }catch(SQLException e){
       e.printStackTrace();
     }finally {

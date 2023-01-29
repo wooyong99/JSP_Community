@@ -1,5 +1,6 @@
 package com.jwy.exam.servlet;
 
+import com.jwy.exam.Rq;
 import com.jwy.exam.util.DBUtil;
 import com.jwy.exam.util.SecSql;
 import jakarta.servlet.ServletException;
@@ -16,13 +17,14 @@ import java.util.Map;
 
 @WebServlet("/article/detail")
 public class ArticleDetailServlet extends HttpServlet {
-  Connection con = null;
-  String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-  String id = "jwy";
-  String pw = "1234";
-
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    Rq rq = new Rq(req,resp);
+
+    Connection con = null;
+    String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+    String id = "jwy";
+    String pw = "1234";
     try {
       Class.forName("com.mysql.jdbc.Driver");
     } catch (ClassNotFoundException e) {
@@ -31,15 +33,16 @@ public class ArticleDetailServlet extends HttpServlet {
     }
     try {
       con = DriverManager.getConnection(url, id, pw);
+
       SecSql sql = new SecSql();
       sql.append("SELECT * FROM article");
       sql.append("WHERE id = ?", req.getParameter("id"));
-      System.out.println(sql);
+
       Map<String, Object> articleRow = DBUtil.selectRow(con, sql);
 
       req.setAttribute("articleRow", articleRow);
 
-      req.getRequestDispatcher("/article/detail.jsp").forward(req, resp);
+      rq.jsp("../article/detail");
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {

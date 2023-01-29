@@ -1,5 +1,6 @@
 package com.jwy.exam;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -36,7 +37,24 @@ public class Rq {
       }
     }
   }
+  public String getParam(String paramName, String defaultValue){
+    String paramValue = req.getParameter(paramName);
 
+    if(paramValue == null || paramValue.equals("") || paramValue.isEmpty()){
+      return defaultValue;
+    }else{
+      return paramValue;
+    }
+  }
+  public void jsp(String jspPath){
+    try {
+      req.getRequestDispatcher(jspPath + ".jsp").forward(req,resp);
+    } catch (ServletException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
   public void appendBody(String str){
     try {
       resp.getWriter().append(str);

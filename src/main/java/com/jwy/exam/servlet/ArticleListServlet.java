@@ -1,5 +1,6 @@
 package com.jwy.exam.servlet;
 
+import com.jwy.exam.Rq;
 import com.jwy.exam.util.DBUtil;
 import com.jwy.exam.util.SecSql;
 import jakarta.servlet.ServletException;
@@ -18,10 +19,13 @@ import java.util.Map;
 public class ArticleListServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    Rq rq = new Rq(req,resp);
+
     Connection con = null;
     String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
     String id = "jwy";
     String pw = "1234";
+
     try{
       Class.forName("com.mysql.jdbc.Driver");
     }catch(ClassNotFoundException e){
@@ -33,13 +37,8 @@ public class ArticleListServlet extends HttpServlet {
       con = DriverManager.getConnection(url, id, pw);
       SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt FROM article");
       Map<String,Object> article_cnt = DBUtil.selectRow(con,sql);
-      int page;
-      // 만약 page 파라미터 값이 올바르지 않다면 1로 설정
-      try{
-        page = Integer.parseInt(req.getParameter("page"));
-      }catch(Exception e){
-        page = 1;
-      }
+      int page = rq.getIntParam("page",1);
+
       // 한 페이지 당 보여주는 게시글 수
       int onePageArticleCnt = 30;
       // 총 게시글 개수
@@ -52,7 +51,7 @@ public class ArticleListServlet extends HttpServlet {
       //1~5, 6~10, 11~15
       int pageStartNum = (page % 5 != 0) ? ((page/5) * 5) +1 : page / 5 ;
       int pageLastNum = pageStartNum+4;
-      System.out.println(totalPagingCnt);
+
       sql = SecSql.from("SELECT * FROM article");
       sql.append("ORDER BY id DESC");
       sql.append("LIMIT ?, ?", startList, onePageArticleCnt);
@@ -63,7 +62,7 @@ public class ArticleListServlet extends HttpServlet {
       req.setAttribute("pageLastNum", pageLastNum);
       req.setAttribute("articleRows", articleRows);
 
-      req.getRequestDispatcher("/article/list.jsp").forward(req,resp);
+      rq.jsp("../article/list");
     }catch(SQLException e){
       e.printStackTrace();
     }finally{

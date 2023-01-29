@@ -1,5 +1,6 @@
 package com.jwy.exam.servlet;
 
+import com.jwy.exam.Rq;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import java.io.IOException;
 public class HomeMainServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.getRequestDispatcher("../home/main.jsp").forward(req,resp);
+    Rq rq = new Rq(req, resp);
+    rq.jsp("../home/main");
   }
 }
