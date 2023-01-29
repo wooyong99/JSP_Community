@@ -13,18 +13,21 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-@WebServlet("/article/list")
-public class ArticleListServlet extends HttpServlet {
+
+@WebServlet("/article/doWrite")
+public class ArticleDoWriteServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     doGet(req, resp);
   }
+
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    Rq rq = new Rq(req,resp);
+    req.setCharacterEncoding("UTF-8");
+    resp.setCharacterEncoding("UTF-8");
+    resp.setContentType("text/html; charset-utf-8");
 
+    Rq rq = new Rq(req,resp);
     Connection con = null;
     String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
     String id = "jwy";
@@ -38,45 +41,44 @@ public class ArticleListServlet extends HttpServlet {
       return;
     }
     try{
+      String title = rq.getParam("title","");
+      String body = rq.getParam("body","");
+      if(title.equals("") && body.equals("")){
+        rq.appendBody(String.format("<script> alert('제목/내용을 입력해주세요.'); location.replace('write'); </script>"));
+        return;
+      }else if(title.equals("")){
+        rq.appendBody(String.format("<script> alert('제목을 입력해주세요.'); location.replace('write'); </script>"));
+        return;
+      }else if(body.equals("")){
+        rq.appendBody(String.format("<script> alert('내용을 입력해주세요.'); location.replace('write'); </script>"));
+        return;
+      }
       con = DriverManager.getConnection(url, id, pw);
-      SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt FROM article");
-      Map<String,Object> article_cnt = DBUtil.selectRow(con,sql);
-      int page = rq.getIntParam("page",1);
 
-      // 한 페이지 당 보여주는 게시글 수
-      int onePageArticleCnt = 30;
-      // 총 게시글 개수
-      int totalArticleCnt = (int) article_cnt.get("cnt");
-      // 총 페이징 개수
-      int totalPagingCnt = (int) Math.ceil((double)totalArticleCnt / onePageArticleCnt);
-      // 페이징 시작 게시글
-      int startList = (page-1)*onePageArticleCnt ;
+      SecSql sql = SecSql.from("INSERT INTO article SET");
+      sql.append("regDate = NOW(), ");
+      sql.append("updateDate = NOW(), ");
+      sql.append("title = ? ,", title);
+      sql.append("body = ? ", body);
 
-      //1~5, 6~10, 11~15
-      int pageStartNum = (page % 5 != 0) ? ((page/5) * 5) +1 : page / 5 ;
-      int pageLastNum = pageStartNum+4;
+      int id_param = DBUtil.insert(con, sql);
 
-      sql = SecSql.from("SELECT * FROM article");
+      sql = SecSql.from("SELECT id FROM article");
       sql.append("ORDER BY id DESC");
-      sql.append("LIMIT ?, ?", startList, onePageArticleCnt);
+      sql.append("LIMIT 1");
 
-      List<Map<String, Object>> articleRows =  DBUtil.selectRows(con,sql);
-      req.setAttribute("totalPagingCnt", totalPagingCnt);
-      req.setAttribute("pageStartNum", pageStartNum);
-      req.setAttribute("pageLastNum", pageLastNum);
-      req.setAttribute("articleRows", articleRows);
-
-      rq.jsp("../article/list");
+      rq.appendBody(String.format("<script> alert('%d번 게시글이 등록되었습니다.'); location.replace('detail?id=%d'); </script>", id_param,id_param));
     }catch(SQLException e){
       e.printStackTrace();
-    }finally{
+    }finally {
       try{
         if(con.isClosed() && con != null){
           con.close();
         }
       }catch(SQLException e){
-          e.printStackTrace();
+        e.printStackTrace();
       }
     }
+
   }
 }

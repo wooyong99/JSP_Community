@@ -18,6 +18,11 @@ import java.util.Map;
 @WebServlet("/article/detail")
 public class ArticleDetailServlet extends HttpServlet {
   @Override
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    doGet(req, resp);
+  }
+
+  @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     Rq rq = new Rq(req,resp);
 

@@ -15,25 +15,21 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 
-@WebServlet("/article/doWrite")
-public class ArticleDoWrite extends HttpServlet {
+@WebServlet("/article/modify")
+public class ArticleModifyServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     doGet(req, resp);
   }
-
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.setCharacterEncoding("UTF-8");
-    resp.setCharacterEncoding("UTF-8");
-    resp.setContentType("text/html; charset-utf-8");
-
     Rq rq = new Rq(req,resp);
+
     Connection con = null;
     String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
     String id = "jwy";
     String pw = "1234";
-
+    int id_param = rq.getIntParam("id", 0);
     try{
       Class.forName("com.mysql.jdbc.Driver");
     }catch(ClassNotFoundException e){
@@ -42,33 +38,16 @@ public class ArticleDoWrite extends HttpServlet {
       return;
     }
     try{
-      String title = rq.getParam("title","");
-      String body = rq.getParam("body","");
-      if(title.equals("") && body.equals("")){
-        rq.appendBody(String.format("<script> alert('제목/내용을 입력해주세요.'); location.replace('write'); </script>"));
-        return;
-      }else if(title.equals("")){
-        rq.appendBody(String.format("<script> alert('제목을 입력해주세요.'); location.replace('write'); </script>"));
-        return;
-      }else if(body.equals("")){
-        rq.appendBody(String.format("<script> alert('내용을 입력해주세요.'); location.replace('write'); </script>"));
-        return;
-      }
       con = DriverManager.getConnection(url, id, pw);
 
-      SecSql sql = SecSql.from("INSERT INTO article SET");
-      sql.append("regDate = NOW(), ");
-      sql.append("updateDate = NOW(), ");
-      sql.append("title = ? ,", title);
-      sql.append("body = ? ", body);
+      SecSql sql = SecSql.from("SELECT * FROM article");
+      sql.append("WHERE id = ?", id_param);
 
-      int id_param = DBUtil.insert(con, sql);
+      Map<String, Object> articleRow = DBUtil.selectRow(con,sql);
 
-      sql = SecSql.from("SELECT id FROM article");
-      sql.append("ORDER BY id DESC");
-      sql.append("LIMIT 1");
+      req.setAttribute("articleRow", articleRow);
 
-      rq.appendBody(String.format("<script> alert('%d번 게시글이 등록되었습니다.'); location.replace('detail?id=%d'); </script>", id_param,id_param));
+      rq.jsp("../article/modify");
     }catch(SQLException e){
       e.printStackTrace();
     }finally {
@@ -80,6 +59,5 @@ public class ArticleDoWrite extends HttpServlet {
         e.printStackTrace();
       }
     }
-
   }
 }

@@ -12,6 +12,10 @@ import java.io.IOException;
 @WebServlet("/home/main")
 public class HomeMainServlet extends HttpServlet {
   @Override
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    doGet(req, resp);
+  }
+  @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     Rq rq = new Rq(req, resp);
     rq.jsp("../home/main");
