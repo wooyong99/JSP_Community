@@ -49,9 +49,7 @@ public class Rq {
   public void jsp(String jspPath){
     try {
       req.getRequestDispatcher(jspPath + ".jsp").forward(req,resp);
-    } catch (ServletException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
+    } catch (ServletException | IOException e) {
       e.printStackTrace();
     }
   }

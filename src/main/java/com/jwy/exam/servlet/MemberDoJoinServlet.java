@@ -2,6 +2,7 @@ package com.jwy.exam.servlet;
 
 import com.jwy.exam.Config;
 import com.jwy.exam.Rq;
+import com.jwy.exam.exception.SQLErrorException;
 import com.jwy.exam.util.DBUtil;
 import com.jwy.exam.util.SecSql;
 import jakarta.servlet.ServletException;
@@ -47,7 +48,9 @@ public class MemberDoJoinServlet extends HttpServlet {
       rq.appendBody(String.format("<script> alert('회원가입이 완료되었습니다.'); location.replace('/home/main'); </script>"));
     }catch(SQLException e){
       e.printStackTrace();
-    }finally {
+    }catch(SQLErrorException e){
+      e.getOrigin().printStackTrace();
+    } finally {
       try{
         if(con.isClosed() && con != null){
           con.close();

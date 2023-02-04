@@ -10,7 +10,14 @@
   <title>메인 페이지</title>
 </head>
 <body>
-  <h1>메인 페이지</h1>
+<h1>메인 페이지</h1>
+<div>
   <a href="../article/list">리스트 페이지</a>
+</div>
+<div>
+  <a href="../member/join">회원 가입</a>
+</div>
+
+
 </body>
 </html>

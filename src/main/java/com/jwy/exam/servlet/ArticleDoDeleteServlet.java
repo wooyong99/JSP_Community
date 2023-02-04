@@ -2,6 +2,7 @@ package com.jwy.exam.servlet;
 
 import com.jwy.exam.Config;
 import com.jwy.exam.Rq;
+import com.jwy.exam.exception.SQLErrorException;
 import com.jwy.exam.util.DBUtil;
 import com.jwy.exam.util.SecSql;
 import jakarta.servlet.ServletException;
@@ -46,7 +47,9 @@ public class ArticleDoDeleteServlet extends HttpServlet {
       }
     }catch(SQLException e){
       e.printStackTrace();
-    }finally {
+    }catch(SQLErrorException e){
+      e.getOrigin().printStackTrace();
+    } finally {
       try{
         if(con.isClosed() && con != null){
           con.close();

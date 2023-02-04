@@ -56,7 +56,7 @@ public class DBUtil {
       }
     } catch (SQLException e) {
       throw new SQLErrorException("SQL 예외, SQL : " + sql, e);
-    } finally {
+    }finally{
       if (rs != null) {
         try {
           rs.close();
