@@ -1,5 +1,6 @@
 package com.jwy.exam.servlet;
 
+import com.jwy.exam.Config;
 import com.jwy.exam.Rq;
 import com.jwy.exam.util.DBUtil;
 import com.jwy.exam.util.SecSql;
@@ -18,17 +19,12 @@ import java.sql.SQLException;
 public class ArticleDoModifyServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    req.setCharacterEncoding("UTF-8");
-    resp.setCharacterEncoding("UTF-8");
-    resp.setContentType("text/html; charset-utf-8");
+    Config.setEncode(req, resp);
 
     Rq rq = new Rq(req, resp);
 
     Connection con = null;
 
-    String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-    String id = "jwy";
-    String pw = "1234";
     int id_param = rq.getIntParam("id",0);
     String title = rq.getParam("title","");
     String body = rq.getParam("body","");
@@ -44,15 +40,9 @@ public class ArticleDoModifyServlet extends HttpServlet {
       return;
     }
 
+    Config.ClassforName();
     try{
-      Class.forName("com.mysql.jdbc.Driver");
-    }catch(ClassNotFoundException e){
-      System.out.println("예외 : MySQL에 연결할 수 없습니다.");
-      e.printStackTrace();
-      return;
-    }
-    try{
-      con = DriverManager.getConnection(url, id, pw);
+      con = DriverManager.getConnection(Config.getDBUrl(), Config.getDBId(), Config.getDBPw());
 
       SecSql sql = SecSql.from("UPDATE article SET ");
       sql.append("updateDate = NOW(),");

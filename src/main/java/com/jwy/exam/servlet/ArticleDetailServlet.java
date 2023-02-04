@@ -1,5 +1,6 @@
 package com.jwy.exam.servlet;
 
+import com.jwy.exam.Config;
 import com.jwy.exam.Rq;
 import com.jwy.exam.util.DBUtil;
 import com.jwy.exam.util.SecSql;
@@ -27,17 +28,11 @@ public class ArticleDetailServlet extends HttpServlet {
     Rq rq = new Rq(req,resp);
 
     Connection con = null;
-    String url = "jdbc:mysql://127.0.0.1:3306/JSP_Community?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-    String id = "jwy";
-    String pw = "1234";
+
+    Config.ClassforName();
+
     try {
-      Class.forName("com.mysql.jdbc.Driver");
-    } catch (ClassNotFoundException e) {
-      System.out.println("예외 : MySQL에 연결 할 수 없습니다.");
-      e.printStackTrace();
-    }
-    try {
-      con = DriverManager.getConnection(url, id, pw);
+      con = DriverManager.getConnection(Config.getDBUrl(), Config.getDBId(), Config.getDBPw());
 
       SecSql sql = new SecSql();
       sql.append("SELECT * FROM article");
