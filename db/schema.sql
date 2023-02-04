@@ -49,3 +49,16 @@ BODY = CONCAT("내용_",RAND());
 INSERT INTO article(regDate, updateDate, title, BODY)
 SELECT NOW(), NOW(), CONCAT('제목_',RAND()), CONCAT('내용_',RAND())
 FROM article;
+
+
+CREATE TABLE `member`(
+	id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	regDate DATETIME NOT NULL,
+	updateDate DATETIME NOT NULL,
+	user_id CHAR(100) NOT NULL,
+	user_pw CHAR(100) NOT NULL,
+	`name` CHAR(100) NOT NULL,
+	tel CHAR(100) NOT NULL
+)
+
+SELECT * FROM `member`;

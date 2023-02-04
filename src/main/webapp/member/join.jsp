@@ -69,7 +69,7 @@
       return false;
     }
 
-    var telReg = /\d{3}-\d{3,4}-\d{4}/;
+    var telReg = /\d{3}-\d{3,4}-\d{4}$/;
     if(!telReg.test(frm.tel.value)){
       alert('연락처 양식을 확인해주세요.');
       frm.tel.focus();
