@@ -22,7 +22,7 @@
 <script>
   function Join__submit(){
     let Join__submitDone = false;
-    if(Join_submitDone == true){
+    if(Join__submitDone == true){
       alert('처리 중입니다.');
       return false;
     }
@@ -49,6 +49,12 @@
       return false;
     }
 
+    if(frm.pw_confirm.value != frm.user_pw.value) {
+      alert('비밀번호가 일치하지 않습니다.');
+      frm.pw_confirm.focus();
+      return false;
+    }
+
     frm.name.value= frm.name.value.trim();
     if(frm.name.value.length==0){
       alert('이름을 입력해주세요.');
@@ -62,7 +68,14 @@
       frm.tel.focus();
       return false;
     }
-    form.submit;
+
+    var telReg = /\d{3}-\d{3,4}-\d{4}/;
+    if(!telReg.test(frm.tel.value)){
+      alert('연락처 양식을 확인해주세요.');
+      frm.tel.focus();
+      return false;
+    }
+
     Join__submitDone = true;
   }
 

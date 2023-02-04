@@ -30,38 +30,29 @@ public class MemberDoJoinServlet extends HttpServlet {
     String name = req.getParameter("name");
     String tel = req.getParameter("tel");
 
-    if( !user_pw.equals(pw_confirm)){
-      rq.appendBody("<script> alert('비밀번호가 일치하지 않습니다.'); location.replace('join'); </script>");
-      return;
-    }
-    if( !Pattern.matches("^010-[0-9]{3,4}-[0-9]{4}", tel)){
-      rq.appendBody("<script> alert('연락처를 올바르게 입력해주세요.'); location.replace('join'); </script>");
-      return;
-    }
-
     Config.ClassforName();
 
-//    try{
-//      con = DriverManager.getConnection(Config.getDBUrl(), Config.getDBId(), Config.getDBPw());
-//
-//      SecSql sql = SecSql.from("INSERT INTO member SET");
-//      sql.append("user_id = ?,", user_id);
-//      sql.append("user_pw = ?,", user_pw);
-//      sql.append("name = ?,", name);
-//      sql.append("tel = ?", tel);
-//
-//      int memberId = DBUtil.insert(con,sql);
-//    }catch(SQLException e){
-//      e.printStackTrace();
-//    }finally {
-//      try{
-//        if(con.isClosed() && con != null){
-//          con.close();
-//        }
-//      }catch(SQLException e){
-//        e.printStackTrace();
-//      }
-//    }
+    try{
+      con = DriverManager.getConnection(Config.getDBUrl(), Config.getDBId(), Config.getDBPw());
+
+      SecSql sql = SecSql.from("INSERT INTO member SET");
+      sql.append("user_id = ?,", user_id);
+      sql.append("user_pw = ?,", user_pw);
+      sql.append("name = ?,", name);
+      sql.append("tel = ?", tel);
+
+      int memberId = DBUtil.insert(con,sql);
+    }catch(SQLException e){
+      e.printStackTrace();
+    }finally {
+      try{
+        if(con.isClosed() && con != null){
+          con.close();
+        }
+      }catch(SQLException e){
+        e.printStackTrace();
+      }
+    }
   }
 
   @Override
