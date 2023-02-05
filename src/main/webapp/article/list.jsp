@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.List" %>
 
 <%
   List<Map<String,Object>> articleRows = (List<Map<String,Object>>) request.getAttribute("articleRows");
@@ -39,6 +40,9 @@
 </head>
 <body>
     <h1>게시물 리스트</h1>
+
+    <%@ include file="../part/topbar.jspf"%>
+
     <button onclick="window.location.href='write'">게시물 작성</button>
     <table border="1" style="text-align:center;">
       <colgroup>

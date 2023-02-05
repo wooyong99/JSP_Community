@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -30,12 +31,36 @@ public class ArticleDetailServlet extends HttpServlet {
 
     Connection con = null;
 
+    HttpSession session = req.getSession();
+
     Config.ClassforName();
 
     try {
       con = DriverManager.getConnection(Config.getDBUrl(), Config.getDBId(), Config.getDBPw());
 
-      SecSql sql = new SecSql();
+      boolean isLogined ;
+      int loginMemberId ;
+
+      SecSql sql;
+      Map<String, Object> memberMap = null;
+
+      if(session.getAttribute("loginMemberId") != null){
+        isLogined = true;
+        loginMemberId = (int) session.getAttribute("loginMemberId");
+        sql = SecSql.from("SELECT * FROM member");
+        sql.append("WHERE id = ?", loginMemberId);
+
+        memberMap = DBUtil.selectRow(con, sql);
+      }else{
+        isLogined = false;
+        loginMemberId = -1;
+      }
+
+      req.setAttribute("isLogined", isLogined);
+      req.setAttribute("loginMemberId", loginMemberId);
+      req.setAttribute("memberMap", memberMap);
+
+      sql = new SecSql();
       sql.append("SELECT * FROM article");
       sql.append("WHERE id = ?", req.getParameter("id"));
 

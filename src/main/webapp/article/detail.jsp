@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.Map" %>
 
 <%
   Map<String,Object> articleRow = (Map<String,Object>)request.getAttribute("articleRow");
@@ -15,6 +15,7 @@
 </head>
 <body>
   <h1>게시물 상세보기</h1>
+  <%@ include file="../part/topbar.jspf"%>
   <table border="1" style="text-align:center;">
     <colgroup>
       <col width="100">
