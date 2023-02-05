@@ -50,6 +50,7 @@ INSERT INTO article(regDate, updateDate, title, BODY)
 SELECT NOW(), NOW(), CONCAT('제목_',RAND()), CONCAT('내용_',RAND())
 FROM article;
 
+SELECT * FROM article;
 
 CREATE TABLE `member`(
 	id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -61,4 +62,36 @@ CREATE TABLE `member`(
 	tel CHAR(100) NOT NULL
 )
 
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+user_id = 'user1',
+user_pw = 'user1',
+`name` = '유저1',
+tel = '010-1111-1111';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+user_id = 'user2',
+user_pw = 'user2',
+`name` = '유저2',
+tel = '010-2222-2222';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+user_id = 'user3',
+user_pw = 'user3',
+`name` = '유저3',
+tel = '010-3333-3333';
+
 SELECT * FROM `member`;
+
+ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER id;
+
+SELECT * FROM article;
+
+UPDATE article
+SET memberId = 2;
+WHERE memberId= 0;

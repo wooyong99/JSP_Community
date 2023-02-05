@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -28,6 +29,17 @@ public class ArticleDoWriteServlet extends HttpServlet {
     Config.setEncode(req, resp);
 
     Rq rq = new Rq(req,resp);
+
+    HttpSession session = req.getSession();
+
+    int loginMemberId  = 0;
+
+    if( session.getAttribute("loginMemberId") == null){
+      rq.appendBody("<script> alert('로그인 후 이용해주세요.'); location.replace('../member/login'); </script>");
+      return;
+    }else{
+      loginMemberId = (int) session.getAttribute("loginMemberId");
+    }
 
     Connection con = null;
 
@@ -51,7 +63,8 @@ public class ArticleDoWriteServlet extends HttpServlet {
       sql.append("regDate = NOW(), ");
       sql.append("updateDate = NOW(), ");
       sql.append("title = ? ,", title);
-      sql.append("body = ? ", body);
+      sql.append("body = ? ,", body);
+      sql.append("memberId = ?", loginMemberId);
 
       int id_param = DBUtil.insert(con, sql);
 
@@ -73,6 +86,5 @@ public class ArticleDoWriteServlet extends HttpServlet {
         e.printStackTrace();
       }
     }
-
   }
 }
