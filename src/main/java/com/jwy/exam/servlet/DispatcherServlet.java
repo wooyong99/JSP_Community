@@ -28,14 +28,9 @@ public class DispatcherServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     Rq rq = new Rq(req, resp);
-    String requestUri = req.getRequestURI();
-    String[] requestUriBits = requestUri.split("/");
-    if(requestUriBits.length < 4){
-      rq.appendBody("<script> alert('잘못된 주소입니다.'); location.replace('/usr/home/main'); </script>");
-      return;
-    }
-    String controllerName = requestUriBits[2];
-    String actionMethodName = requestUriBits[3];
+
+    String controllerName = rq.getControllerName();
+    String actionMethodName = rq.getActionMethodName();
 
     Connection con = null;
 

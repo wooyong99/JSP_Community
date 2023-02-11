@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class Rq {
-  private final HttpServletRequest req;
-  private final HttpServletResponse resp;
+  private HttpServletRequest req;
+  private HttpServletResponse resp;
+  private String controllerName;
+  private String actionMethodName;
 
   public Rq(HttpServletRequest req, HttpServletResponse resp) {
     this.req = req;
@@ -22,6 +24,14 @@ public class Rq {
     }
     resp.setCharacterEncoding("UTF-8");
     resp.setContentType("text/html; charset-utf-8");
+    String requestUri = req.getRequestURI();
+    String[] requestUriBits = requestUri.split("/");
+    if(requestUriBits.length < 4){
+      appendBody("<script> alert('잘못된 주소입니다.'); location.replace('/usr/home/main'); </script>");
+      return;
+    }
+    controllerName = requestUriBits[2];
+    actionMethodName = requestUriBits[3];
   }
 
   public int getIntParam(String paramName, int defaultValue){
@@ -67,5 +77,13 @@ public class Rq {
 
   public HttpServletResponse getResp() {
     return resp;
+  }
+
+  public String getControllerName() {
+    return controllerName;
+  }
+
+  public String getActionMethodName() {
+    return actionMethodName;
   }
 }
