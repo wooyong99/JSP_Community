@@ -21,7 +21,9 @@ public class MemberDao {
     sql.append("WHERE user_id = ?", user_id);
 
     Map<String,Object> memberMap = DBUtil.selectRow(con, sql);
-
+    if(memberMap.isEmpty()){
+      return null;
+    }
     return new Member(memberMap);
   }
 

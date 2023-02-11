@@ -73,7 +73,7 @@ public class MemberController {
     int memberId = memberService.memberInsert(user_id,user_pw, name, tel);
 
 
-    rq.appendBody(String.format("<script> alert('회원가입이 완료되었습니다.'); location.replace('/home/main'); </script>"));
+    rq.appendBody(String.format("<script> alert('회원가입이 완료되었습니다.'); location.replace('/usr/home/main'); </script>"));
   }
 
   public void actionIdValidation() {
