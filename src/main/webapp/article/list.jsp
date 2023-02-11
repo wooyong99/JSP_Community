@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
-
+<%@ page import="com.jwy.exam.dto.Article" %>
 <%
-  List<Map<String,Object>> articleRows = (List<Map<String,Object>>) request.getAttribute("articleRows");
+  List<Article> articles = (List<Article>) request.getAttribute("articles");
   int pageStartNum = (int) request.getAttribute("pageStartNum");
   int pageLastNum = (int) request.getAttribute("pageLastNum");
   int totalPagingCnt = (int) request.getAttribute("totalPagingCnt");
@@ -59,12 +59,12 @@
         </tr>
       </thead>
       <tbody>
-      <% for(Map<String,Object> articleRow : articleRows) {%>
+      <% for(Article article : articles) {%>
       <tr>
-        <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("id")%></a></td>
-        <td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("regDate")%></a></td>
-        <td class="articleTitle"><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></td></td>
-        <td><a href="doDelete?id=<%=articleRow.get("id")%>">삭제하기</a> / <a href="modify?id=<%=articleRow.get("id")%>">수정하기</a></td>
+        <td><a href="detail?id=<%=article.id%>"><%=article.id%></a></td>
+        <td><a href="detail?id=<%=article.id%>"><%=article.regDate%></a></td>
+        <td class="articleTitle"><a href="detail?id=<%=article.id%>"><%=article.title%></td></td>
+        <td><a href="doDelete?id=<%=article.id%>">삭제하기</a> / <a href="modify?id=<%=article.id%>">수정하기</a></td>
       </tr>
       <% } %>
       </tbody>

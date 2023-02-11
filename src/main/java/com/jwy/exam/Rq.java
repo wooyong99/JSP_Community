@@ -60,4 +60,12 @@ public class Rq {
       throw new RuntimeException(e);
     }
   }
+
+  public HttpServletRequest getReq() {
+    return req;
+  }
+
+  public HttpServletResponse getResp() {
+    return resp;
+  }
 }

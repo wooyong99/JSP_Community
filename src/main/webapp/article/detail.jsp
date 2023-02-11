@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="com.jwy.exam.dto.Article" %>
 
 <%
-  Map<String,Object> articleRow = (Map<String,Object>)request.getAttribute("articleRow");
+Article article = (Article) request.getAttribute("article");
 %>
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -33,13 +35,13 @@
       <th>비고</th>
     </tr>
     <tr>
-      <td><%= articleRow.get("id")%></td>
-      <td><%= articleRow.get("regDate")%></td>
-      <td><%= articleRow.get("updateDate")%></td>
-      <td><%= articleRow.get("title")%></td>
-      <td><%= articleRow.get("body")%></td>
+      <td><%= article.id%></td>
+      <td><%= article.regDate%></td>
+      <td><%= article.updateDate%></td>
+      <td><%= article.title%></td>
+      <td><%= article.body%></td>
       <td>
-        <a href="doDelete?id=<%=articleRow.get("id")%>">삭제하기</a> / <a href="modify?id=<%=articleRow.get("id")%>">수정하기</a>
+        <a href="doDelete?id=<%=article.id%>">삭제하기</a> / <a href="modify?id=<%=article.id%>">수정하기</a>
       </td>
     </tr>
   </table>
