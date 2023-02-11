@@ -12,7 +12,7 @@ public class Rq {
   private HttpServletResponse resp;
   private String controllerName;
   private String actionMethodName;
-
+  private boolean isInvalid = false;
   public Rq(HttpServletRequest req, HttpServletResponse resp) {
     this.req = req;
     this.resp = resp;
@@ -27,7 +27,7 @@ public class Rq {
     String requestUri = req.getRequestURI();
     String[] requestUriBits = requestUri.split("/");
     if(requestUriBits.length < 4){
-      appendBody("<script> alert('잘못된 주소입니다.'); location.replace('/usr/home/main'); </script>");
+      isInvalid = true;
       return;
     }
     controllerName = requestUriBits[2];
@@ -85,5 +85,9 @@ public class Rq {
 
   public String getActionMethodName() {
     return actionMethodName;
+  }
+
+  public boolean getIsInvalid() {
+    return isInvalid;
   }
 }
