@@ -51,8 +51,11 @@ public class ArticleDao {
     sql.append("WHERE id = ?", id_param);
 
     Map<String, Object> articleRow = DBUtil.selectRow(con, sql);
-
-    return new Article(articleRow);
+    if(articleRow.isEmpty()){
+      return null;
+    }else{
+      return new Article(articleRow);
+    }
   }
 
   public void articleUpdate(String title, String body, int id_param) {

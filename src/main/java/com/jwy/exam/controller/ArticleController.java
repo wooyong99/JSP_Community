@@ -90,7 +90,10 @@ public class ArticleController extends Controller{
 
   public void actionDetail() {
       Article article = articleService.getArticle();
-
+      if(article == null){
+        rq.appendBody("<script> alert('존재하지 않는 게시글입니다.'); location.replace('/usr/article/list'); </script>");
+        return ;
+      }
       req.setAttribute("article", article);
 
       rq.jsp("/article/detail");
