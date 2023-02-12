@@ -1,7 +1,9 @@
 package com.jwy.exam.dto;
 
-import java.util.Map;
+import lombok.Data;
 
+import java.util.Map;
+@Data
 public class Article {
   public int id;
   public String regDate;

@@ -29,7 +29,7 @@ public class DispatcherServlet extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     Rq rq = new Rq(req, resp);
 
-    if(rq.getIsInvalid()){
+    if(rq.isInvalid()){
       rq.appendBody("올바른 요청이 아닙니다.");
     }
 

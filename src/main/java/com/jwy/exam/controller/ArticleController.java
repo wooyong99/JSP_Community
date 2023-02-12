@@ -1,22 +1,14 @@
 package com.jwy.exam.controller;
 
-import com.jwy.exam.Config;
 import com.jwy.exam.Rq;
 import com.jwy.exam.dto.Article;
-import com.jwy.exam.dto.ResultData;
-import com.jwy.exam.exception.SQLErrorException;
 import com.jwy.exam.service.ArticleService;
-import com.jwy.exam.util.DBUtil;
-import com.jwy.exam.util.SecSql;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class ArticleController extends Controller{
   private Connection con;

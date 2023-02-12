@@ -3,10 +3,12 @@ package com.jwy.exam;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Data;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
+@Data
 public class Rq {
   private HttpServletRequest req;
   private HttpServletResponse resp;
@@ -71,27 +73,5 @@ public class Rq {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  public HttpServletRequest getReq() {
-    return req;
-  }
-
-  public HttpServletResponse getResp() {
-    return resp;
-  }
-  public String getControllerTypeName() {
-    return controllerTypeName;
-  }
-  public String getControllerName() {
-    return controllerName;
-  }
-
-  public String getActionMethodName() {
-    return actionMethodName;
-  }
-
-  public boolean getIsInvalid() {
-    return isInvalid;
   }
 }
