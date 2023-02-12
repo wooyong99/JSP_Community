@@ -78,6 +78,9 @@ public class DispatcherServlet extends HttpServlet {
             case "home":
               homeController.performAction(rq);
               break;
+            default:
+              rq.appendBody("존재하지 않는 페이지입니다.");
+              break;
           }
       }
     }catch(SQLException e){

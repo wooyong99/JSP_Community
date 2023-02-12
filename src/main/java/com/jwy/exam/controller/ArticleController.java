@@ -3,6 +3,7 @@ package com.jwy.exam.controller;
 import com.jwy.exam.Config;
 import com.jwy.exam.Rq;
 import com.jwy.exam.dto.Article;
+import com.jwy.exam.dto.ResultData;
 import com.jwy.exam.exception.SQLErrorException;
 import com.jwy.exam.service.ArticleService;
 import com.jwy.exam.util.DBUtil;
@@ -53,6 +54,9 @@ public class ArticleController extends Controller{
         break;
       case "doDelete":
         actionDoDelete();
+        break;
+      default:
+        rq.appendBody("존재하지 않는 페이지입니다.");
         break;
     }
   }

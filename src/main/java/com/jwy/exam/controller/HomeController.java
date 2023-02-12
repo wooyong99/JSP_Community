@@ -26,6 +26,9 @@ public class HomeController extends Controller{
       case "main":
         actionMain();
         break;
+      default:
+        rq.appendBody("존재하지 않는 페이지입니다.");
+        break;
     }
   }
 
