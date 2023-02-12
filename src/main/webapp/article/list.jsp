@@ -1,13 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.jwy.exam.dto.Article" %>
-<%
-  List<Article> articles = (List<Article>) request.getAttribute("articles");
-  int pageStartNum = (int) request.getAttribute("pageStartNum");
-  int pageLastNum = (int) request.getAttribute("pageLastNum");
-  int totalPagingCnt = (int) request.getAttribute("totalPagingCnt");
-%>
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -59,29 +55,35 @@
         </tr>
       </thead>
       <tbody>
-      <% for(Article article : articles) {%>
-      <tr>
-        <td><a href="detail?id=<%=article.id%>"><%=article.id%></a></td>
-        <td><a href="detail?id=<%=article.id%>"><%=article.regDate%></a></td>
-        <td class="articleTitle"><a href="detail?id=<%=article.id%>"><%=article.title%></td></td>
-        <td><a href="doDelete?id=<%=article.id%>">삭제하기</a> / <a href="modify?id=<%=article.id%>">수정하기</a></td>
-      </tr>
-      <% } %>
+
+      <c:forEach items="${articles}" var="article">
+        <tr>
+          <td><a href="detail?id=${article.id}"><c:out value="${article.id}"/></a></td>
+          <td><a href="detail?id=${article.id}">${article.regDate}</a></td>
+          <td class="articleTitle"><a href="detail?id=${article.id}">${article.title}</td></td>
+          <td><a href="doDelete?id=${article.id}">삭제하기</a> / <a href="modify?id=${article.id}">수정하기</a></td>
+        </tr>
+      </c:forEach>
       </tbody>
     </table>
     <ul class="page">
-      <% if(pageStartNum > 1 ){ %>
-      <li><a href="list?page=<%=pageStartNum-5%>"> 이전 </a></li>
-      <% }%>
-      <%
-      for(int i = pageStartNum; i <= pageLastNum; i++) {
-        if(i <= totalPagingCnt){
-      %>
-      <li><a href="list?page=<%=i%>"><%=i%></a></li>
-      <% } } %>
-      <% if(pageStartNum +5 < totalPagingCnt) { %>
-      <li><a href="list?page=<%=pageStartNum+5%>"> 다음 </a></li>
-      <% } %>
+      <c:set var="pageStartNum" value="${pageStartNum}"/>
+      <c:set var="pageLastNum" value="${pageLastNum}"/>
+      <c:set var="totalPagingCnt" value="${totalPagingCnt}"/>
+
+      <c:if test="${pageStartNum > 1}">
+        <li><a href="list?page=${pageStartNum-5}"> 이전 </a></li>
+      </c:if>
+
+      <c:forEach var="i" begin="${pageStartNum}" end="${pageLastNum}" step="1">
+        <c:if test="${i <= totalPagingCnt}">
+          <li><a href="list?page=${i}">${i}</a></li>
+        </c:if>
+      </c:forEach>
+
+      <c:if test="${pageStartNum+5 < totalPagingCnt}">
+        <li><a href="list?page=${pageStartNum+5}"> 다음 </a></li>
+      </c:if>
     </ul>
 </body>
 </html>

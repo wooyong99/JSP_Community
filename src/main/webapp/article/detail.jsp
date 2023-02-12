@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ page import="java.util.Map" %>
 <%@ page import="com.jwy.exam.dto.Article" %>
 
@@ -35,13 +36,13 @@ Article article = (Article) request.getAttribute("article");
       <th>비고</th>
     </tr>
     <tr>
-      <td><%= article.id%></td>
-      <td><%= article.regDate%></td>
-      <td><%= article.updateDate%></td>
-      <td><%= article.title%></td>
-      <td><%= article.body%></td>
+      <td>${article.id}</td>
+      <td>${article.regDate}</td>
+      <td>${article.updateDate}</td>
+      <td>${article.title}</td>
+      <td>${article.body}</td>
       <td>
-        <a href="doDelete?id=<%=article.id%>">삭제하기</a> / <a href="modify?id=<%=article.id%>">수정하기</a>
+        <a href="doDelete?id=${article.id}">삭제하기</a> / <a href="modify?id=${article.id}">수정하기</a>
       </td>
     </tr>
   </table>
