@@ -91,10 +91,23 @@ public class ArticleController extends Controller{
       rq.jsp("/article/detail");
   }
   public void actionModify() {
+    HttpSession session = req.getSession();
+
     Article article = articleService.getArticle();
     if(article == null){
       rq.appendBody("<script> alert('존재하지 않는 게시글입니다.'); location.replace('/usr/article/list'); </script>");
       return ;
+    }
+    int loginMemberId;
+    try{
+      loginMemberId = (int)session.getAttribute("loginMemberId");
+    }catch(NullPointerException e){
+      loginMemberId = -1;
+    }
+    if(loginMemberId != article.memberId){
+      System.out.println("실행");
+      rq.appendBody(String.format("<script> alert('수정 권한이 없습니다.'); history.back(); </script>", article.id));
+      return;
     }
     req.setAttribute("article", article);
 
@@ -154,6 +167,22 @@ public class ArticleController extends Controller{
   }
 
   public void actionDoDelete() {
+    HttpSession session = req.getSession();
+
+    Article article = articleService.getArticle();
+    int loginMemberId;
+    try{
+      loginMemberId = (int) session.getAttribute("loginMemberId");
+    }catch(NullPointerException e){
+      loginMemberId = -1;
+    }
+
+    if(loginMemberId != article.memberId){
+      rq.appendBody("<script> alert('삭제 권한이 없습니다.'); history.back(); </script>");
+      return;
+    }
+
+
     int id_param = rq.getIntParam("id",0);
 
     int deleteRow = articleService.articleDelete(id_param);
