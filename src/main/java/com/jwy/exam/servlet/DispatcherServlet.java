@@ -33,9 +33,6 @@ public class DispatcherServlet extends HttpServlet {
       rq.appendBody("올바른 요청이 아닙니다.");
     }
 
-    String controllerName = rq.getControllerName();
-    String actionMethodName = rq.getActionMethodName();
-
     Connection con = null;
 
     Config.ClassforName();
@@ -65,69 +62,23 @@ public class DispatcherServlet extends HttpServlet {
       req.setAttribute("isLogined", isLogined);
       req.setAttribute("loginMemberId", loginMemberId);
       req.setAttribute("member", member);
-      if(controllerName.equals("article")){
-        ArticleController articleController = new ArticleController(con, rq);
-        if(actionMethodName.equals("list")){
-          articleController.actionList();
-          return;
-        }
-        if(actionMethodName.equals("detail")){
-          articleController.actionDetail();
-          return;
-        }
-        if(actionMethodName.equals("modify")){
-          articleController.actionModify();
-          return;
-        }
-        if(actionMethodName.equals("doModify")){
-          articleController.actionDoModify();
-          return ;
-        }
-        if(actionMethodName.equals("write")){
-          articleController.actionWrite();
-          return;
-        }
-        if(actionMethodName.equals("doWrite")){
-          articleController.actionDoWrite();
-          return;
-        }
-        if(actionMethodName.equals("doDelete")){
-          articleController.actionDoDelete();
-          return;
-        }
-      } else if (controllerName.equals("member")) {
-        MemberController memberController = new MemberController(con, rq);
-        if(actionMethodName.equals("login")){
-          memberController.actionLogin();
-          return;
-        }
-        if(actionMethodName.equals("doLogin")){
-          memberController.actionDoLogin();
-          return;
-        }
-        if(actionMethodName.equals("doLogout")){
-          memberController.actionDoLogout();
-          return;
-        }
-        if(actionMethodName.equals("join")){
-          memberController.actionJoin();
-          return;
-        }
-        if(actionMethodName.equals("doJoin")){
-          memberController.actionDoJoin();
-          return;
-        }
-        if(actionMethodName.equals("idValidation")){
-          memberController.actionIdValidation();
-          return;
-        }
-      } else if (controllerName.equals("home")) {
-        HomeController homeController = new HomeController(con, rq);
-        if(actionMethodName.equals("main")){
-          homeController.actionMain();
-          return;
-        }
 
+      switch ( rq.getControllerTypeName()) {
+        case "usr":
+          ArticleController articleController = new ArticleController(con, rq);
+          MemberController memberController = new MemberController(con,rq);
+          HomeController homeController = new HomeController(con, rq);
+          switch (rq.getControllerName()) {
+            case "article":
+              articleController.performAction(rq);
+              break;
+            case "member":
+              memberController.performAction(rq);
+              break;
+            case "home":
+              homeController.performAction(rq);
+              break;
+          }
       }
     }catch(SQLException e){
       e.printStackTrace();

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.sql.Connection;
 
-public class HomeController {
+public class HomeController extends Controller{
   private Connection con;
   private Rq rq;
   private ArticleService articleService;
@@ -18,6 +18,15 @@ public class HomeController {
     this.rq = rq;
     this.req = rq.getReq();
     this.resp = rq.getResp();
+  }
+
+  @Override
+  public void performAction(Rq rq) {
+    switch (rq.getActionMethodName()){
+      case "main":
+        actionMain();
+        break;
+    }
   }
 
   public void actionMain() {

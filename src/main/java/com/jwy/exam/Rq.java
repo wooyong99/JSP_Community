@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 public class Rq {
   private HttpServletRequest req;
   private HttpServletResponse resp;
+  private String controllerTypeName;
   private String controllerName;
   private String actionMethodName;
   private boolean isInvalid = false;
@@ -30,6 +31,7 @@ public class Rq {
       isInvalid = true;
       return;
     }
+    controllerTypeName = requestUriBits[1];
     controllerName = requestUriBits[2];
     actionMethodName = requestUriBits[3];
   }
@@ -78,7 +80,9 @@ public class Rq {
   public HttpServletResponse getResp() {
     return resp;
   }
-
+  public String getControllerTypeName() {
+    return controllerTypeName;
+  }
   public String getControllerName() {
     return controllerName;
   }

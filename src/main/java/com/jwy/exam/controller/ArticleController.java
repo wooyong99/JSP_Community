@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class ArticleController {
+public class ArticleController extends Controller{
   private Connection con;
   private Rq rq;
   private ArticleService articleService;
@@ -29,6 +29,32 @@ public class ArticleController {
     this.articleService = new ArticleService(con, rq);
     this.req = rq.getReq();
     this.resp = rq.getResp();
+  }
+  @Override
+  public void performAction(Rq rq) {
+    switch (rq.getActionMethodName()) {
+      case "list":
+        actionList();
+        break;
+      case "write":
+        actionWrite();
+        break;
+      case "doWrite":
+        actionDoWrite();
+        break;
+      case "detail":
+        actionDetail();
+        break;
+      case "modify":
+        actionModify();
+        break;
+      case "doModify":
+        actionDoModify();
+        break;
+      case "doDelete":
+        actionDoDelete();
+        break;
+    }
   }
 
   public void actionList() {

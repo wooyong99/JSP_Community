@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class MemberController {
+public class MemberController extends Controller{
   private Connection con;
   private Rq rq;
   private MemberService memberService;
@@ -28,6 +28,29 @@ public class MemberController {
     this.memberService = new MemberService(con ,rq);
     this.req = rq.getReq();
     this.resp = rq.getResp();
+  }
+  @Override
+  public void performAction(Rq rq) {
+    switch (rq.getActionMethodName()) {
+      case "login":
+        actionLogin();
+        break;
+      case "doLogin":
+        actionDoLogin();
+        break;
+      case "join":
+        actionJoin();
+        break;
+      case "doJoin":
+        actionDoJoin();
+        break;
+      case "doLogout":
+        actionDoLogout();
+        break;
+      case "idValidation":
+        actionIdValidation();
+        break;
+    }
   }
 
   public void actionLogin() {
