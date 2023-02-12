@@ -16,12 +16,14 @@ public class ArticleController extends Controller{
   private ArticleService articleService;
   private HttpServletResponse resp;
   private HttpServletRequest req;
+  private HttpSession session;
   public ArticleController(Connection con, Rq rq) {
     this.con = con;
     this.rq = rq;
     this.articleService = new ArticleService(con, rq);
     this.req = rq.getReq();
     this.resp = rq.getResp();
+    this.session = req.getSession();
   }
   @Override
   public void performAction(Rq rq) {
@@ -91,8 +93,6 @@ public class ArticleController extends Controller{
       rq.jsp("/article/detail");
   }
   public void actionModify() {
-    HttpSession session = req.getSession();
-
     Article article = articleService.getArticle();
     if(article == null){
       rq.appendBody("<script> alert('존재하지 않는 게시글입니다.'); location.replace('/usr/article/list'); </script>");
@@ -167,8 +167,6 @@ public class ArticleController extends Controller{
   }
 
   public void actionDoDelete() {
-    HttpSession session = req.getSession();
-
     Article article = articleService.getArticle();
     int loginMemberId;
     try{

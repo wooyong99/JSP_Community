@@ -21,13 +21,14 @@ public class MemberController extends Controller{
   private MemberService memberService;
   private HttpServletResponse resp;
   private HttpServletRequest req;
-
+  private HttpSession session;
   public MemberController(Connection con, Rq rq) {
     this.con = con;
     this.rq = rq;
     this.memberService = new MemberService(con ,rq);
     this.req = rq.getReq();
     this.resp = rq.getResp();
+    this.session = req.getSession();
   }
   @Override
   public void performAction(Rq rq) {
@@ -57,6 +58,11 @@ public class MemberController extends Controller{
   }
 
   public void actionLogin() {
+    if(session.getAttribute("loginMemberId") != null){
+      rq.appendBody("<script> alert('로그인 상태입니다.'); location.replace('/usr/article/list'); </script>");
+      return ;
+    }
+
     rq.jsp("/member/login");
   }
 
@@ -90,7 +96,6 @@ public class MemberController extends Controller{
   }
 
   public void actionJoin() {
-    HttpSession session = req.getSession();
     if(session.getAttribute("loginMemberId") != null){
       rq.appendBody("<script> alert('이미 로그인 상태입니다.'); history.back(); </script>");
       return;
