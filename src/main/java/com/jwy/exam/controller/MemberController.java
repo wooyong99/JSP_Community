@@ -80,12 +80,21 @@ public class MemberController extends Controller{
   }
   public void actionDoLogout() {
     HttpSession session = req.getSession();
+    if(session.getAttribute("loginMemberId") == null){
+      rq.appendBody("<script> alert('로그인 후 이용해주세요.'); location.replace('/usr/member/login'); </script>");
+      return;
+    }
     session.removeAttribute("loginMemberId");
 
     rq.appendBody("<script> alert('로그아웃 되었습니다.'); location.replace('/usr/home/main'); </script>");
   }
 
   public void actionJoin() {
+    HttpSession session = req.getSession();
+    if(session.getAttribute("loginMemberId") != null){
+      rq.appendBody("<script> alert('이미 로그인 상태입니다.'); history.back(); </script>");
+      return;
+    }
     rq.jsp("/member/join");
   }
 

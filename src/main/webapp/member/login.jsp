@@ -1,10 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%
-String user_id =null;
-if(request.getParameter("user_id") != null){
-user_id = request.getParameter("user_id");
-}
-%>
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -51,6 +46,8 @@ user_id = request.getParameter("user_id");
   <br>
   <input type="submit" value="login">
 </form>
+<a href="/usr/home/main">메인페이지로</a><br>
+<a href="/usr/article/list">리스트페이지로</a>
 
 </body>
 </html>

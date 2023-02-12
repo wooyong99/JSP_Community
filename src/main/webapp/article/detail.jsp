@@ -3,10 +3,6 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="com.jwy.exam.dto.Article" %>
 
-<%
-Article article = (Article) request.getAttribute("article");
-%>
-
 <!doctype html>
 <html lang="ko">
 <head>

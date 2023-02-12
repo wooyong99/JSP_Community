@@ -1,10 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%
-  String user_id =null;
-  if(request.getParameter("user_id") != null){
-    user_id = request.getParameter("user_id");
-  }
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -81,19 +77,23 @@
 
 </script>
 <form action="doJoin" method="POST" onsubmit="return Join__submit();" name="frm" >
-  <%
-    if(user_id != null){
-  %>
-  <label>ID : <input type="text" name="user_id" value="<%=user_id%>" readonly></label>
-  <button type="button" id="idValidation" value="true">
-    <a>사용가능</a>
-  </button>
-  <% }else{%>
-  <label>ID : <input type="text" name="user_id" placeholder="ID를 입력해주세요"></label>
-  <button type="button" id="idValidation" value="false">
-    <a onclick="if(frm.user_id.value) { location.href='idValidation?user_id='+$(frm.user_id).val(); } return false;">중복확인</a>
-  </button>
-  <% } %>
+  <c:set var="user_id" value="${param.user_id}"/>
+
+  <c:if test="${user_id != null}">
+    <label>ID : <input type="text" name="user_id" value="${user_id}" readonly></label>
+    <button type="button" id="idValidation" value="true">
+      <a>사용가능</a>
+    </button>
+  </c:if>
+
+  <c:if test="${user_id == null}">
+    <label>ID : <input type="text" name="user_id" placeholder="ID를 입력해주세요"></label>
+    <button type="button" id="idValidation" value="false">
+      <a onclick="if(frm.user_id.value) { location.href='idValidation?user_id='+$(frm.user_id).val(); } return false;">중복확인</a>
+    </button>
+  </c:if>
+
+
   <br>
   <label>PW : <input type="password" name="user_pw" placeholder="비밀번호를 입력해주세요"></label>
   <br>
@@ -105,6 +105,8 @@
   <br>
   <input type="submit" value="join">
 </form>
+<a href="/usr/home/main">메인페이지로</a><br>
+<a href="/usr/article/list">리스트페이지로</a>
 
 </body>
 </html>
