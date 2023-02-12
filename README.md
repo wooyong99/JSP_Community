@@ -27,6 +27,9 @@
 * Logout
 * 게시글 페이징
 * Login Id 중복 확인
+* 추가기능
+  * 게시글 삭제 및 권한 부여 기능
+  * 중복 로그인 및 회원가입 검사  기능
 
 ## 05. ERD
  <img src="https://user-images.githubusercontent.com/85385921/216825133-34fc3612-1795-4acb-aef3-6b76facb0dc4.PNG"/>
